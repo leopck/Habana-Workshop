@@ -103,9 +103,6 @@ def main():
     parser.add_argument('--save-model', action='store_true', default=False,
                         help='For Saving the current Model')
     args = parser.parse_args()
-    use_cuda = not args.no_cuda and torch.cuda.is_available()
-    print(f"use_cuda: {use_cuda}")
-    use_mps = not args.no_mps and torch.backends.mps.is_available()
 
     torch.manual_seed(args.seed)
     ##################################
@@ -114,12 +111,6 @@ def main():
 
     train_kwargs = {'batch_size': args.batch_size}
     test_kwargs = {'batch_size': args.test_batch_size}
-    if use_cuda:
-        cuda_kwargs = {'num_workers': 1,
-                       'pin_memory': True,
-                       'shuffle': True}
-        train_kwargs.update(cuda_kwargs)
-        test_kwargs.update(cuda_kwargs)
 
     transform=transforms.Compose([
         transforms.ToTensor(),
